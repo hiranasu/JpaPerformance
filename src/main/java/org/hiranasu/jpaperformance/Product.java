@@ -4,12 +4,10 @@ import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.Table;
+import javax.persistence.NamedQuery;
 
 @Entity
-@Table(name="PRODUCT")
-@NamedNativeQuery(name = "thousands", query = "select * from product where id >= 1000 and id < 10000", resultClass = Product.class)
+@NamedQuery(name="findProduct", query="select p from Product p where p.id = :id")
 public class Product {
 	
 	@Id
