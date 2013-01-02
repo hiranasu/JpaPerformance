@@ -10,6 +10,9 @@
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="eclipselink.ddl-generation" value="create-tables"/>
             <property name="eclipselink.jdbc.cache-statements" value="false"/>
+<!-- 
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+ -->
         </properties>
     </persistence-unit>
 </persistence>
