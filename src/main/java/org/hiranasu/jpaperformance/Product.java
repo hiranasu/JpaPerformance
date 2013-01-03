@@ -4,12 +4,16 @@ import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="product")
-@NamedQuery(name="findProduct", query="select p from Product p where p.id = :id")
+@NamedQueries({
+	@NamedQuery(name="findProduct", query="select p from Product p where p.id = :id"),
+	@NamedQuery(name="findProducts", query="select p from Product p where p.id > :lowerId and p.id < :upperId")
+})
 public class Product {
 	
 	@Id

@@ -39,16 +39,18 @@ public class JpaPerformanceTester {
 			
 			// Entityでselect
 			long start = System.currentTimeMillis();
-			for (int i = 0; i < 1000; i++) {
-				Product product = em.find(Product.class, BigDecimal.valueOf(r.nextInt(100000)));
-			}
+//			for (int i = 0; i < 1000; i++) {
+//				Product product = em.find(Product.class, BigDecimal.valueOf(r.nextInt(100000)));
+//			}
 			long finish = System.currentTimeMillis();
-			System.out.println(finish - start);
+//			System.out.println(finish - start);
 			
 			// NativeQuery
 			start = System.currentTimeMillis();
 			for (int i = 0; i < 1000; i++) {
-				List<Product> products = em.createNativeQuery("select * from product where id = " + r.nextInt(100000)).getResultList();
+				int lowerIndex = r.nextInt(100000);
+				int upperIndex = lowerIndex + 1000;
+				List<Product> products = em.createNativeQuery("select * from product where id > " + lowerIndex + " and id < " + upperIndex).getResultList();
 			}
 			finish = System.currentTimeMillis();
 			System.out.println(finish - start);
@@ -59,24 +61,27 @@ public class JpaPerformanceTester {
 //				List<Product> productsJPQL = em.createQuery("select p from Product p where p.id = " + r.nextInt(100000)).getResultList();
 
 				// try NamedQuery
-				Query query = em.createNamedQuery("findProduct");
-				query.setParameter("id", r.nextInt(100000));
+				int lowerIndex = r.nextInt(100000);
+				int upperIndex = lowerIndex + 1000;
+				Query query = em.createNamedQuery("findProducts");
+				query.setParameter("lowerId", lowerIndex);
+				query.setParameter("upperId", upperIndex);
 				List<Product> productsJPQL = (List<Product>)query.getResultList();
 			}
 			finish = System.currentTimeMillis();
 			System.out.println(finish - start);
 			
 			// criteria API
-			start = System.currentTimeMillis();
-			for (int i = 0; i < 1000; i++) {
-				CriteriaBuilder cb = em.getCriteriaBuilder();
-				CriteriaQuery<Product> cq = cb.createQuery(Product.class);
-				Root<Product> rt = cq.from(Product.class);
-				cq.select(rt).where(cb.equal(rt.get("id"), r.nextInt(100000)));
-				List<Product> productsCriteria = em.createQuery(cq).getResultList();
-			}
-			finish = System.currentTimeMillis();
-			System.out.println(finish - start);
+//			start = System.currentTimeMillis();
+//			for (int i = 0; i < 1000; i++) {
+//				CriteriaBuilder cb = em.getCriteriaBuilder();
+//				CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+//				Root<Product> rt = cq.from(Product.class);
+//				cq.select(rt).where(cb.equal(rt.get("id"), r.nextInt(100000)));
+//				List<Product> productsCriteria = em.createQuery(cq).getResultList();
+//			}
+//			finish = System.currentTimeMillis();
+//			System.out.println(finish - start);
 			
 			
 		} finally {
