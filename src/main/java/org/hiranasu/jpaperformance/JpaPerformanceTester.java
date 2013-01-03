@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -55,7 +56,12 @@ public class JpaPerformanceTester {
 			// JPQL
 			start = System.currentTimeMillis();
 			for (int i = 0; i < 1000; i++) {
-				List<Product> productsJPQL = em.createQuery("select p from Product p where p.id = " + r.nextInt(100000)).getResultList();
+//				List<Product> productsJPQL = em.createQuery("select p from Product p where p.id = " + r.nextInt(100000)).getResultList();
+
+				// try NamedQuery
+				Query query = em.createNamedQuery("findProduct");
+				query.setParameter("id", r.nextInt(100000));
+				List<Product> productsJPQL = (List<Product>)query.getResultList();
 			}
 			finish = System.currentTimeMillis();
 			System.out.println(finish - start);
