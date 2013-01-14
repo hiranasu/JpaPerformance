@@ -50,7 +50,10 @@ public class JpaPerformanceTester {
 			for (int i = 0; i < 1000; i++) {
 				int lowerIndex = r.nextInt(100000);
 				int upperIndex = lowerIndex + 1000;
-				List<Product> products = em.createNativeQuery("select * from product where id > " + lowerIndex + " and id < " + upperIndex).getResultList();
+				Query query = em.createNamedQuery("findProductsByNative");
+				query.setParameter("lowerId", lowerIndex);
+				query.setParameter("upperId", upperIndex);
+				List<Product> products = (List<Product>)query.getResultList();
 			}
 			finish = System.currentTimeMillis();
 			System.out.println(finish - start);

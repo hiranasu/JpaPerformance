@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -12,7 +14,10 @@ import javax.persistence.Table;
 @Table(name="product")
 @NamedQueries({
 	@NamedQuery(name="findProduct", query="select p from Product p where p.id = :id"),
-	@NamedQuery(name="findProducts", query="select p from Product p where p.id > :lowerId and p.id < :upperId")
+	@NamedQuery(name="findProducts", query="select p from Product p where p.id > :lowerId and p.id < :upperId"),
+})
+@NamedNativeQueries({
+	@NamedNativeQuery(name="findProductsByNative", query="select * from product where id > ?lowerId and id < ?upperId")
 })
 public class Product {
 	
